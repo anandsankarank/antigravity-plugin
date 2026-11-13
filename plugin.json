@@ -1,0 +1,11 @@
+{
+  "name": "amdui",
+  "displayName": "A-MDUI Studio",
+  "description": "Generative UI and interactive document renderer for A-MDUI (.mdui) in Antigravity",
+  "version": "1.0.0",
+  "author": "Anand Sankaran",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anandsankarank/antigravity-plugin.git"
+  }
+}

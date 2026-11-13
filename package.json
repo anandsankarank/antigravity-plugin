@@ -1,0 +1,18 @@
+{
+  "name": "@a-mdui/antigravity-plugin",
+  "version": "1.0.0",
+  "description": "Antigravity UI Plugin & Sidecar for A-MDUI",
+  "type": "module",
+  "main": "sidecars/viewer/server.mjs",
+  "scripts": {
+    "start": "node sidecars/viewer/server.mjs"
+  },
+  "keywords": [
+    "antigravity",
+    "mdui",
+    "markdown-ui",
+    "generative-ui"
+  ],
+  "author": "Anand Sankaran",
+  "license": "MIT"
+}
