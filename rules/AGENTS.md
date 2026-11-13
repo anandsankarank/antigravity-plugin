@@ -22,3 +22,4 @@ The `amdui` plugin is active. A-MarkdownUI (.mdui) is a rich, modern superset of
 
 4. **Chat Conversational Text**:
    Keep accompanying chat responses concise (1-2 sentences summarizing the deliverable) and let the rendered A-MDUI card deliver the complete, styled experience.
+
