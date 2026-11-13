@@ -23,3 +23,4 @@ Or target a specific document in the workspace:
 ## License
 
 MIT © Anand Sankaran
+

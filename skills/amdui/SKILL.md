@@ -81,3 +81,4 @@ A-MDUI Generative UI components are completely **self-contained and autonomous**
 1. All state transitions, multi-step wizards, filtering, calculations, and input interactions occur entirely within the rendered client-side component using `@state` variables and `action:set:...` triggers.
 2. The MCP tool does not attempt to dispatch external HTTP callbacks or push involuntary turns into the agent session.
 3. If the agent needs to ask the user a question to make decisions or continue a backend task, it should use Antigravity's native `ask_question` tool or a plain-text prompt.
+
