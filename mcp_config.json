@@ -3,9 +3,8 @@
     "amdui": {
       "command": "node",
       "args": [
-        "packages/mcp/dist/index.js"
+        "mcp/index.js"
       ]
     }
   }
 }
-
