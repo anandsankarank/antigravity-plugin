@@ -37,7 +37,30 @@ function findMduiFiles(dir, maxDepth = 4, currentDepth = 0) {
   return results;
 }
 
+function getCorsHeaders(req) {
+  const origin = req.headers.origin;
+  if (!origin) return {};
+  try {
+    const parsed = new URL(origin);
+    if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+      return {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      };
+    }
+  } catch {}
+  return {};
+}
+
 const server = http.createServer((req, res) => {
+  const corsHeaders = getCorsHeaders(req);
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, corsHeaders);
+    return res.end();
+  }
+
   const url = new URL(req.url, `http://localhost:${PORT}`);
 
   // List workspace .mdui files
@@ -45,7 +68,7 @@ const server = http.createServer((req, res) => {
     const files = findMduiFiles(WORKSPACE_DIR);
     res.writeHead(200, {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      ...corsHeaders
     });
     return res.end(JSON.stringify({ files }));
   }
@@ -58,14 +81,22 @@ const server = http.createServer((req, res) => {
       return res.end('Missing path');
     }
     const safePath = path.resolve(WORKSPACE_DIR, requestedPath);
-    if (!safePath.startsWith(WORKSPACE_DIR) || !fs.existsSync(safePath)) {
+    const isContained = safePath === WORKSPACE_DIR || safePath.startsWith(WORKSPACE_DIR + path.sep);
+    if (!isContained || !fs.existsSync(safePath)) {
       res.writeHead(404);
       return res.end('File not found');
     }
+
+    const ext = path.extname(safePath).toLowerCase();
+    if (ext !== '.mdui' && ext !== '.md') {
+      res.writeHead(403);
+      return res.end('Access denied: only .mdui and .md files permitted');
+    }
+
     const content = fs.readFileSync(safePath, 'utf8');
     res.writeHead(200, {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Access-Control-Allow-Origin': '*'
+      ...corsHeaders
     });
     return res.end(content);
   }
@@ -79,7 +110,7 @@ const server = http.createServer((req, res) => {
     const ext = path.extname(filePath).toLowerCase();
     res.writeHead(200, {
       'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',
-      'Access-Control-Allow-Origin': '*'
+      ...corsHeaders
     });
     return fs.createReadStream(filePath).pipe(res);
   }
