@@ -102,11 +102,14 @@ const server = http.createServer((req, res) => {
   }
 
   // Serve static assets from public/
-  const publicDir = path.join(__dirname, 'public');
+  const publicDir = path.resolve(__dirname, 'public');
   let relPath = url.pathname === '/' ? 'index.html' : url.pathname.replace(/^\//, '');
-  let filePath = path.join(publicDir, relPath);
+  let filePath = path.resolve(publicDir, relPath);
 
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+  // Defense-in-depth: Ensure filePath is strictly contained within publicDir
+  const isContainedInPublic = filePath === publicDir || filePath.startsWith(publicDir + path.sep);
+
+  if (isContainedInPublic && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     const ext = path.extname(filePath).toLowerCase();
     res.writeHead(200, {
       'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',
