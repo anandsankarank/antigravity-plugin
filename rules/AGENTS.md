@@ -11,12 +11,11 @@ The `amdui` plugin is active. A-MarkdownUI (.mdui) is a rich, modern superset of
    - **CRITICAL - Inline Chat Embed**: Antigravity IDE requires the `<agent-embed src="file://..."></agent-embed>` tag in your visible assistant message response to render the interactive widget inline in the chat. You MUST copy the `<agent-embed>` tag returned by `render_mdui` directly into your visible response text!
    - Do not dump long, monolithic blocks of unformatted text or plain markdown directly into the chat response when a visually structured A-MDUI presentation communicates the information more clearly.
 
-2. **Standard Markdown Enhancements**:
-   Since standard Markdown is 100% valid `.mdui`, leverage A-MDUI's structural containers to elevate standard markdown:
-   - **`::: hero`**: Use for introduction banners and key takeaways.
-   - **`::: card`**: Use to group related sections, code snippets, or reference points.
-   - **`::: row` / `::: grid`**: Use for parallel comparisons, pros/cons, or metrics.
+2. **Natural Document Flow & Selective Card Usage**:
+   - Since standard Markdown is 100% valid `.mdui`, prefer clean, natural document flow for explanations, technical documentation, reports, and narratives (headings `#`, `##`, paragraphs, bullet lists, tables, and code blocks).
+   - **Avoid Overusing Cards**: Do NOT force all content into `::: card` or `::: row` boxes. Cards should be used selectively for distinct modular items (interactive forms, intake wizards, metric tiles, or side-by-side options).
    - **`::: callout`**: Use for notes, tips, warnings, and alerts.
+   - **`::: hero`**: Use sparingly for key milestones or major project announcements.
 
 3. **Interactive Wizards & Forms**:
    For tasks requiring user choices, configuration, or parameter gathering, build a Progressive Intake Wizard with `@step`, segmented controls, and action triggers.
