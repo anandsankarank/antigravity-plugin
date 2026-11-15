@@ -87,7 +87,9 @@ rawEditor.addEventListener('input', () => {
 
 if (copyFileBtn) {
   copyFileBtn.addEventListener('click', async () => {
-    const textToCopy = rawEditor.value || '';
+    const sel = window.getSelection();
+    const selText = sel ? sel.toString().trim() : '';
+    const textToCopy = selText || rawEditor.value || '';
     if (!textToCopy) return;
     try {
       if (navigator.clipboard) {
