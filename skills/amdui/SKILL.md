@@ -65,14 +65,14 @@ Use single-screen layout only for read-only telemetry, historical reports, elect
 1. Generate the `.mdui` markup adhering to the Progressive Intake Wizard or Dashboard pattern.
 2. Call `render_mdui`:
    - Pass `content: "<mdui markup>"`, `title: "<Component Title>"`, and `theme: "dark"`.
-3. The tool generates an Antigravity-compliant HTML artifact and returns:
+3. The tool generates an Antigravity-compliant HTML artifact and returns the embed code:
    ```html
    <agent-embed src="file:///<artifact-path>"></agent-embed>
    ```
-   Antigravity renders the live, interactive UI directly in the conversation chat.
-4. **Side Pane Preview**: You can also provide the user with a link to inspect the document in the auxiliary side panel:
+   **CRITICAL REQUIREMENT**: You MUST copy this `<agent-embed src="file://..."></agent-embed>` tag directly into your visible assistant message response so Antigravity renders the live, interactive UI directly in the conversation chat.
+4. **Side Pane Preview**: You can also provide the user with a clickable link to inspect the document in A-MDUI Studio:
    ```markdown
-   [Open in A-MDUI Studio](sidecar://amdui/viewer/)
+   [Open in A-MDUI Studio](http://localhost:4388/)
    ```
 
 ## Self-Contained Client-Side UI & Actions
