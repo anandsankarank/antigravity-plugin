@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate Plugin Structure
+        run: |
+          node -e "
+            const fs = require('fs');
+            const plugin = JSON.parse(fs.readFileSync('plugin.json', 'utf8'));
+            if (!plugin.name || !plugin.version) throw new Error('Invalid plugin.json');
+            console.log('✓ plugin.json valid:', plugin.name, plugin.version);
+            if (!fs.existsSync('mcp/index.js')) throw new Error('Missing mcp/index.js');
+            console.log('✓ MCP server bundled');
+            if (!fs.existsSync('sidecars/viewer/server.mjs')) throw new Error('Missing sidecar viewer');
+            console.log('✓ Sidecar viewer present');
+          "
