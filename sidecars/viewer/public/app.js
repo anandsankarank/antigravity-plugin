@@ -6,6 +6,8 @@ const rawEditor = document.getElementById('raw-editor');
 const viewerContainer = document.getElementById('viewer-container');
 const activeFileLabel = document.getElementById('active-file-label');
 
+const copyFileBtn = document.getElementById('copy-file-btn');
+
 let currentFile = '';
 let isRawMode = false;
 
@@ -82,6 +84,32 @@ rawEditor.addEventListener('input', () => {
     viewer.setAttribute('content', rawEditor.value);
   }
 });
+
+if (copyFileBtn) {
+  copyFileBtn.addEventListener('click', async () => {
+    const textToCopy = rawEditor.value || '';
+    if (!textToCopy) return;
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(textToCopy);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = textToCopy;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      const orig = copyFileBtn.textContent;
+      copyFileBtn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        copyFileBtn.textContent = orig;
+      }, 2000);
+    } catch (err) {
+      console.warn('Copy failed', err);
+    }
+  });
+}
 
 // Initialization
 const params = new URLSearchParams(window.location.search);
