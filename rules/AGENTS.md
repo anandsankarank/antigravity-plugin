@@ -23,6 +23,7 @@ The `amdui` plugin is active. A-MarkdownUI (.mdui) is a rich, modern superset of
 4. **Chat Conversational Text & Inline Embedding**:
    - Keep accompanying chat text concise (1-2 sentences summarizing the deliverable).
    - **Always paste the `<agent-embed src="file://..."></agent-embed>` tag directly into your visible response text** so the user sees the rendered, styled interactive experience in their chat window.
+   - **No Redundant Raw Code Blocks**: When presenting an A-MDUI component via `<agent-embed>` or browser link, do NOT dump duplicate ````mdui ```` code blocks in the chat response. Present only the interactive component and concise explanatory text.
    - **No Redundant Fallback Images**: Do not attach duplicate static screenshot previews (`![...](...)`) when the live `<agent-embed>` widget is rendered.
    - For sidecar Studio access, provide the standard HTTP link: `[Open A-MDUI Studio](http://localhost:4388/)`.
 
