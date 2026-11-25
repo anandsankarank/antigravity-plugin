@@ -53,15 +53,64 @@ function getCorsHeaders(req) {
   return {};
 }
 
+let streamClients = [];
+
 const server = http.createServer((req, res) => {
   const corsHeaders = getCorsHeaders(req);
 
   if (req.method === 'OPTIONS') {
-    res.writeHead(204, corsHeaders);
+    res.writeHead(204, {
+      ...corsHeaders,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
     return res.end();
   }
 
   const url = new URL(req.url, `http://localhost:${PORT}`);
+
+  // Server-Sent Events (SSE) live streaming endpoint for A-MDUI widgets
+  if (url.pathname === '/api/stream' && req.method === 'GET') {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      'Connection': 'keep-alive',
+      ...corsHeaders,
+      'Access-Control-Allow-Origin': '*'
+    });
+    res.write(': connected\n\n');
+    streamClients.push(res);
+    req.on('close', () => {
+      streamClients = streamClients.filter(c => c !== res);
+    });
+    return;
+  }
+
+  // Broadcast stream chunks via POST to all connected A-MDUI widgets
+  if (url.pathname === '/api/stream' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const dataStr = `data: ${JSON.stringify(payload)}\n\n`;
+        streamClients.forEach(c => {
+          try { c.write(dataStr); } catch (_) {}
+        });
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          ...corsHeaders,
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify({ ok: true, subscribers: streamClients.length }));
+      } catch (e) {
+        res.writeHead(400, { ...corsHeaders, 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
 
   // List workspace .mdui files
   if (url.pathname === '/api/list') {
