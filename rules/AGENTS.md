@@ -20,10 +20,12 @@ The `amdui` plugin is active. A-MarkdownUI (.mdui) is a rich, modern superset of
 3. **Interactive Wizards & Forms**:
    For tasks requiring user choices, configuration, or parameter gathering, build a Progressive Intake Wizard with `@step`, segmented controls, and action triggers.
 
-4. **Chat Conversational Text & Inline Embedding**:
-   - Keep accompanying chat text concise (1-2 sentences summarizing the deliverable).
-   - **Always paste the `<agent-embed src="file://..."></agent-embed>` tag directly into your visible response text** so the user sees the rendered, styled interactive experience in their chat window.
-   - **No Redundant Raw Code Blocks**: When presenting an A-MDUI component via `<agent-embed>` or browser link, do NOT dump duplicate ````mdui ```` code blocks in the chat response. Present only the interactive component and concise explanatory text.
-   - **No Redundant Fallback Images**: Do not attach duplicate static screenshot previews (`![...](...)`) when the live `<agent-embed>` widget is rendered.
+4. **Strict A-MDUI Only Presentation (No Duplicate Markdown in Chat)**:
+   - **Exclusive A-MDUI Output**: When the `amdui` plugin is active, present your deliverable EXCLUSIVELY inside the rendered `<agent-embed>` component.
+   - **Zero Redundant Markdown in Chat**: Do NOT write duplicate headings, bullet lists, markdown tables, numbered points, or explanations in plain markdown text in your chat response below or above the `<agent-embed>` tag. All details, analysis, status reports, and instructions MUST reside inside the `.mdui` component itself.
+   - Accompanying chat text must be at most 1 short sentence or completely omitted.
+   - **Always paste the `<agent-embed src="file://..."></agent-embed>` tag directly into your visible response text**.
+   - **No Redundant Raw Code Blocks**: Never dump duplicate ````mdui ```` code blocks in chat.
+   - **No Redundant Fallback Images**: Do not attach static screenshot previews (`![...](...)`).
    - For sidecar Studio access, provide the standard HTTP link: `[Open A-MDUI Studio](http://localhost:4388/)`.
 
